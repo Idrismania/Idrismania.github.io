@@ -12,7 +12,7 @@ function calculateHP() {
 
 function calculateHPLoss(attack, defense, enemyAtk, enemyDef, enemyHp) {
     if (enemyDef - attack === 0) {
-        return { hpLoss: "???" };
+        return { hpLoss: "0" };
     }
 
     // Damage = enemy defense - attack, turns is how many damages fit in enemy hp rounded up
