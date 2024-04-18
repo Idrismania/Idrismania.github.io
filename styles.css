@@ -27,14 +27,14 @@ form {
     top: 0px;
     right: 20px;
 
-    border: 5px solid #c4a44d; 
+    border: 3px solid #c4a44d; 
     margin-top: 20px;
     background-color: #625A62;
     border-radius: 0px;
     padding: 20px;
     display: inline-block;
     margin-bottom: 20px;
-    width: 380px;
+    width: 28%;
 }
 
 #explanation {
@@ -42,17 +42,17 @@ form {
     top: 170px;
     right: 20px;
 
-    border: 5px solid #c4a44d; 
+    border: 3px solid #c4a44d; 
     margin-top: 20px;
     background-color: #625A62;
     border-radius: 0px;
     padding: 20px;
     display: inline-block;
     margin-bottom: 40px;
-    width: 380px;
+    width: 28%;
     color: white;
     text-align: justify;
-    height: 360px;
+    height: 58%;
 }
 
 #explanation_text {
@@ -119,7 +119,7 @@ input[type="number"] {
 
 tr, td, col {
     color: white;
-    border: 5px solid #c4a44d; /* Set border width and color for table data cells */
+    border: 3px solid #c4a44d; /* Set border width and color for table data cells */
     padding: 8px; /* Add padding inside the table data cells */
     text-align: left; /* Align text to the left within table data cells */
 }
