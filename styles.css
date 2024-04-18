@@ -1,25 +1,68 @@
+@font-face {
+    font-family: 'AmigaTopaz';
+    src: url('amiga-topaz.ttf') format('truetype');
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'AmigaTopaz', serif;
     margin: 0;
     padding: 0;
-    background-color: #f7f7f7;
+    background-color: #312D31;
     text-align: center;
 }
-h1 {
+#title {
+    width: 70%;
     margin-top: 50px;
-    color: #333;
+    color: white;
 }
+
+#credits {
+    width: 70%;
+    color: white;
+}
+
 form {
+
+    position: fixed;
+    top: 0px;
+    right: 20px;
+
+    border: 5px solid #c4a44d; 
     margin-top: 20px;
-    background-color: #fff;
-    border-radius: 8px;
+    background-color: #625A62;
+    border-radius: 0px;
     padding: 20px;
     display: inline-block;
+    margin-bottom: 20px;
+    width: 380px;
 }
+
+#explanation {
+    position: fixed;
+    top: 170px;
+    right: 20px;
+
+    border: 5px solid #c4a44d; 
+    margin-top: 20px;
+    background-color: #625A62;
+    border-radius: 0px;
+    padding: 20px;
+    display: inline-block;
+    margin-bottom: 40px;
+    width: 380px;
+    color: white;
+    text-align: justify;
+    height: 360px;
+}
+
+#explanation_text {
+    margin-top: 0%;
+}
+
 label {
-    display: block;
-    margin-bottom: 5px;
-    color: #333;
+    display: inline-block;
+    font-size: 20px;
+    color: white;
 }
 input[type="number"] {
     width: 150px;
@@ -28,20 +71,59 @@ input[type="number"] {
     border: 1px solid #ccc;
     margin-bottom: 10px;
 }
-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-button:hover {
-    background-color: #0056b3;
-}
+
 #result {
     margin-top: 20px;
     font-weight: bold;
     color: #333;
+}
+
+#enemyTable {
+    border-collapse: separate;
+    border-spacing: 25px; 
+    width: 65%; 
+    float: left;
+    margin-left: 20px;
+}
+
+#enemyTable td {
+    padding: 4px;
+    text-align: left;
+    background-color: #625A62;
+}
+
+
+#enemyTable img {
+    max-width: 100px; 
+    height: auto; 
+}
+
+#enemyTable td:first-child {
+    width: 100px; 
+}
+
+
+.enemy-stats-display {
+    font-size: 32px;
+    color: white;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 5px;
+}
+
+.enemy-stats-display div {
+    padding: 5px;
+}
+
+
+tr, td, col {
+    color: white;
+    border: 5px solid #c4a44d; /* Set border width and color for table data cells */
+    padding: 8px; /* Add padding inside the table data cells */
+    text-align: left; /* Align text to the left within table data cells */
+}
+
+.hp-loss-stat {
+    color: #fee68f;
 }

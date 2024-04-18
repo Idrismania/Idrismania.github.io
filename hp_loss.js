@@ -1,18 +1,30 @@
 function calculateHP() {
-    var atk = parseFloat(document.getElementById('atk').value);
-    var def = parseFloat(document.getElementById('def').value);
-    var enemyAtk = parseFloat(document.getElementById('enemyAtk').value);
-    var enemyDef = parseFloat(document.getElementById('enemyDef').value);
-    var enemyHp = parseFloat(document.getElementById('enemyHp').value);
+    // Get the player's attack and defense values from the form
+    var playerAtk = parseFloat(document.getElementById('atk').value);
+    var playerDef = parseFloat(document.getElementById('def').value);
 
-
-    var result = calculateHPLoss(atk, def, enemyAtk, enemyDef, enemyHp);
-    document.getElementById('result').innerHTML = 'HP Loss: ' + result.hpLoss;
+    // Loop through each row in the enemy table
+    var rows = document.querySelectorAll('#enemyTable tbody tr');
+    rows.forEach(function(row) {
+        // Get the enemy stats from the data-enemy-stats attribute
+        var enemyStats = JSON.parse(row.querySelector('.enemy-stats').getAttribute('data-enemy-stats'));
+        
+        // Calculate the HP loss based on player's attack and enemy defense
+        var hpLoss = calculateHPLoss(playerAtk, playerDef, enemyStats.atk, enemyStats.def, enemyStats.hp);
+        console.log(hpLoss)
+        // Update the HP loss value in the table
+        row.querySelector('.hp-loss-stat').textContent = hpLoss.hpLoss;
+    });
 }
 
 function calculateHPLoss(attack, defense, enemyAtk, enemyDef, enemyHp) {
-    if (enemyDef - attack === 0) {
-        return { hpLoss: "0" };
+
+    if (attack < 0 || defense < 0){
+        return { hpLoss: "???"}
+    }
+
+    if ((enemyDef - attack) >= 0) {
+        return { hpLoss: "???" };
     }
 
     // Damage = enemy defense - attack, turns is how many damages fit in enemy hp rounded up
@@ -23,9 +35,9 @@ function calculateHPLoss(attack, defense, enemyAtk, enemyDef, enemyHp) {
     const hpLoss = -(nTurns * dmgPerTurn);
 
     if (hpLoss < 0) {
-        return { hpLoss: "???" };
+        return { hpLoss: "0" };
     } else if (isNaN(hpLoss)) {
-        return {hpLoss: ""}
+        return {hpLoss: "???"}
     }
 
     return { hpLoss: hpLoss.toString() };
@@ -34,6 +46,3 @@ function calculateHPLoss(attack, defense, enemyAtk, enemyDef, enemyHp) {
 // Add event listeners to input fields to recalculate HP loss when values change
 document.getElementById('atk').addEventListener('input', calculateHP);
 document.getElementById('def').addEventListener('input', calculateHP);
-document.getElementById('enemyAtk').addEventListener('input', calculateHP);
-document.getElementById('enemyDef').addEventListener('input', calculateHP);
-document.getElementById('enemyHp').addEventListener('input', calculateHP);

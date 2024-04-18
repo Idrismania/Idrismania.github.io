@@ -3,28 +3,518 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculate HP Loss</title>
+    <title>CALCULATE HP LOSS</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Calculate HP Loss</h1>
+    <h1 id="title">DARK TOWER (PDC100) HP LOSS CALCULATOR</h1>
+    <p id="credits">BY IDRIS</p>
     <form id="hpLossForm">
-        <label for="atk">Your Attack:</label>
+        <label for="atk">PLAYER ATK:</label>
         <input type="number" id="atk" name="atk" required><br><br>
-        <label for="def">Your Defense:</label>
-        <input type="number" id="def" name="def" required><br><br>
-        <label for="enemyAtk">Enemy Attack:</label>
-        <input type="number" id="enemyAtk" name="enemyAtk" required><br><br>
-        <label for="enemyDef">Enemy Defense:</label>
-        <input type="number" id="enemyDef" name="enemyDef" required><br><br>
-        <label for="enemyHp">Enemy HP:</label>
-        <input type="number" id="enemyHp" name="enemyHp" required><br><br>
-        <div id="result"></div>
-
-        <script src="hp_loss.js"></script>
+        <label for="def">PLAYER DEF:</label>
+        <input type="number" id="def" name="def" required>
     </form>
+    <div id="explanation">
+        <p id="explanation_text">HP loss calculation is performed in 2 steps. First, the number of turns needed to
+            defeat the enemy is computed by first calculating your damage:<br><br><br>
+            
+            Your damage = -(Enemy Defense - Player Attack)<br><br><br>
 
-    <div id="result"></div>
+            The enemy HP is then divided by your damage and rounded up. If the number is negative,
+            "???" is displayed. Next, the enemy's damage to you is calculated:<br><br><br>
+
+            Enemy damage = -(Player Defense - Enemy Attack)<br><br><br>
+
+            If enemy damage is negative, the HP loss is always 0. The final calculated HP Loss
+            equals the number of turns multiplied by the enemy damage.
+        </p>
+    </div>
+
+    <table id="enemyTable">
+        <tbody>
+            <!-- Header row -->
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/01.png" alt="Enemy 1 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 35, &quot;atk&quot;: 8, &quot;def&quot;: 2}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">35</span></div>
+                        <div>ATT: <span class="atk-stat">8</span></div>
+                        <div>GOLD: <span class="gold-stat">1</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">2</span></div>
+                        <div>EXP: <span class="exp-stat">1</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/02.png" alt="Enemy 2 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 25, &quot;atk&quot;: 10, &quot;def&quot;: 2}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">25</span></div>
+                        <div>ATT: <span class="atk-stat">10</span></div>
+                        <div>GOLD: <span class="gold-stat">1</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">2</span></div>
+                        <div>EXP: <span class="exp-stat">1</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/03.png" alt="Enemy 3 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 50, &quot;atk&quot;: 10, &quot;def&quot;: 3}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">50</span></div>
+                        <div>ATT: <span class="atk-stat">10</span></div>
+                        <div>GOLD: <span class="gold-stat">2</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">3</span></div>
+                        <div>EXP: <span class="exp-stat">1</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/04.png" alt="Enemy 4 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 55, &quot;atk&quot;: 13, &quot;def&quot;: 4}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">55</span></div>
+                        <div>ATT: <span class="atk-stat">13</span></div>
+                        <div>GOLD: <span class="gold-stat">3</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">4</span></div>
+                        <div>EXP: <span class="exp-stat">2</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/05.png" alt="Enemy 5 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 100, &quot;atk&quot;: 18, &quot;def&quot;: 6}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">100</span></div>
+                        <div>ATT: <span class="atk-stat">18</span></div>
+                        <div>GOLD: <span class="gold-stat">3</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">6</span></div>
+                        <div>EXP: <span class="exp-stat">2</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/06.png" alt="Enemy 6 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 75, &quot;atk&quot;: 20, &quot;def&quot;: 10}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">75</span></div>
+                        <div>ATT: <span class="atk-stat">20</span></div>
+                        <div>GOLD: <span class="gold-stat">4</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">10</span></div>
+                        <div>EXP: <span class="exp-stat">3</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/07.png" alt="Enemy 7 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 63, &quot;atk&quot;: 25, &quot;def&quot;: 15}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">63</span></div>
+                        <div>ATT: <span class="atk-stat">25</span></div>
+                        <div>GOLD: <span class="gold-stat">5</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">15</span></div>
+                        <div>EXP: <span class="exp-stat">4</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/08.png" alt="Enemy 8 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 75, &quot;atk&quot;: 33, &quot;def&quot;: 16}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">75</span></div>
+                        <div>ATT: <span class="atk-stat">33</span></div>
+                        <div>GOLD: <span class="gold-stat">5</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">16</span></div>
+                        <div>EXP: <span class="exp-stat">4</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/09.png" alt="Enemy 9 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 150, &quot;atk&quot;: 38, &quot;def&quot;: 24}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">150</span></div>
+                        <div>ATT: <span class="atk-stat">38</span></div>
+                        <div>GOLD: <span class="gold-stat">7</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">24</span></div>
+                        <div>EXP: <span class="exp-stat">5</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/10.png" alt="Enemy 10 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 200, &quot;atk&quot;: 50, &quot;def&quot;: 26}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">200</span></div>
+                        <div>ATT: <span class="atk-stat">50</span></div>
+                        <div>GOLD: <span class="gold-stat">8</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">26</span></div>
+                        <div>EXP: <span class="exp-stat">6</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/11.png" alt="Enemy 11 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 250, &quot;atk&quot;: 63, &quot;def&quot;: 34}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">250</span></div>
+                        <div>ATT: <span class="atk-stat">63</span></div>
+                        <div>GOLD: <span class="gold-stat">8</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">34</span></div>
+                        <div>EXP: <span class="exp-stat">8</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/12.png" alt="Enemy 12 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 450, &quot;atk&quot;: 65, &quot;def&quot;: 36}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">450</span></div>
+                        <div>ATT: <span class="atk-stat">65</span></div>
+                        <div>GOLD: <span class="gold-stat">10</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">36</span></div>
+                        <div>EXP: <span class="exp-stat">8</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/13.png" alt="Enemy 13 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 225, &quot;atk&quot;: 80, &quot;def&quot;: 46}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">225</span></div>
+                        <div>ATT: <span class="atk-stat">80</span></div>
+                        <div>GOLD: <span class="gold-stat">11</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">46</span></div>
+                        <div>EXP: <span class="exp-stat">10</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/14.png" alt="Enemy 14 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 275, &quot;atk&quot;: 90, &quot;def&quot;: 51}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">275</span></div>
+                        <div>ATT: <span class="atk-stat">90</span></div>
+                        <div>GOLD: <span class="gold-stat">13</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">51</span></div>
+                        <div>EXP: <span class="exp-stat">10</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/15.png" alt="Enemy 15 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 50, &quot;atk&quot;: 105, &quot;def&quot;: 56}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">50</span></div>
+                        <div>ATT: <span class="atk-stat">105</span></div>
+                        <div>GOLD: <span class="gold-stat">15</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">56</span></div>
+                        <div>EXP: <span class="exp-stat">13</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/16.png" alt="Enemy 16 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 350, &quot;atk&quot;: 130, &quot;def&quot;: 64}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">350</span></div>
+                        <div>ATT: <span class="atk-stat">130</span></div>
+                        <div>GOLD: <span class="gold-stat">16</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">64</span></div>
+                        <div>EXP: <span class="exp-stat">13</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/17.png" alt="Enemy 17 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 250, &quot;atk&quot;: 205, &quot;def&quot;: 131}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">250</span></div>
+                        <div>ATT: <span class="atk-stat">205</span></div>
+                        <div>GOLD: <span class="gold-stat">24</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">131</span></div>
+                        <div>EXP: <span class="exp-stat">13</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/18.png" alt="Enemy 18 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 600, &quot;atk&quot;: 155, &quot;def&quot;: 76}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">600</span></div>
+                        <div>ATT: <span class="atk-stat">155</span></div>
+                        <div>GOLD: <span class="gold-stat">20</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">76</span></div>
+                        <div>EXP: <span class="exp-stat">15</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/19.png" alt="Enemy 19 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 425, &quot;atk&quot;: 180, &quot;def&quot;: 101}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">425</span></div>
+                        <div>ATT: <span class="atk-stat">180</span></div>
+                        <div>GOLD: <span class="gold-stat">23</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">101</span></div>
+                        <div>EXP: <span class="exp-stat">18</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/20.png" alt="Enemy 20 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 450, &quot;atk&quot;: 245, &quot;def&quot;: 166}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">450</span></div>
+                        <div>ATT: <span class="atk-stat">245</span></div>
+                        <div>GOLD: <span class="gold-stat">25</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">166</span></div>
+                        <div>EXP: <span class="exp-stat">20</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/21.png" alt="Enemy 21 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 625, &quot;atk&quot;: 270, &quot;def&quot;: 201}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">625</span></div>
+                        <div>ATT: <span class="atk-stat">270</span></div>
+                        <div>GOLD: <span class="gold-stat">28</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">201</span></div>
+                        <div>EXP: <span class="exp-stat">23</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/22.png" alt="Enemy 22 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 750, &quot;atk&quot;: 300, &quot;def&quot;: 231}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">750</span></div>
+                        <div>ATT: <span class="atk-stat">300</span></div>
+                        <div>GOLD: <span class="gold-stat">30</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">231</span></div>
+                        <div>EXP: <span class="exp-stat">25</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/23.png" alt="Enemy 23 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 600, &quot;atk&quot;: 330, &quot;def&quot;: 261}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">600</span></div>
+                        <div>ATT: <span class="atk-stat">330</span></div>
+                        <div>GOLD: <span class="gold-stat">33</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">261</span></div>
+                        <div>EXP: <span class="exp-stat">25</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/24.png" alt="Enemy 24 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 1000, &quot;atk&quot;: 360, &quot;def&quot;: 296}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">1000</span></div>
+                        <div>ATT: <span class="atk-stat">360</span></div>
+                        <div>GOLD: <span class="gold-stat">35</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">296</span></div>
+                        <div>EXP: <span class="exp-stat">28</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/25.png" alt="Enemy 25 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 450, &quot;atk&quot;: 395, &quot;def&quot;: 326}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">450</span></div>
+                        <div>ATT: <span class="atk-stat">395</span></div>
+                        <div>GOLD: <span class="gold-stat">39</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">326</span></div>
+                        <div>EXP: <span class="exp-stat">30</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/26.png" alt="Enemy 26 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 1250, &quot;atk&quot;: 500, &quot;def&quot;: 426}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">1250</span></div>
+                        <div>ATT: <span class="atk-stat">500</span></div>
+                        <div>GOLD: <span class="gold-stat">42</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">426</span></div>
+                        <div>EXP: <span class="exp-stat">35</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/27.png" alt="Enemy 27 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 450, &quot;atk&quot;: 435, &quot;def&quot;: 366}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">450</span></div>
+                        <div>ATT: <span class="atk-stat">435</span></div>
+                        <div>GOLD: <span class="gold-stat">44</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">366</span></div>
+                        <div>EXP: <span class="exp-stat">38</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/28.png" alt="Enemy 28 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 600, &quot;atk&quot;: 600, &quot;def&quot;: 451}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">600</span></div>
+                        <div>ATT: <span class="atk-stat">600</span></div>
+                        <div>GOLD: <span class="gold-stat">44</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">451</span></div>
+                        <div>EXP: <span class="exp-stat">38</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/29.png" alt="Enemy 29 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 1550, &quot;atk&quot;: 650, &quot;def&quot;: 476}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">1550</span></div>
+                        <div>ATT: <span class="atk-stat">650</span></div>
+                        <div>GOLD: <span class="gold-stat">46</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">476</span></div>
+                        <div>EXP: <span class="exp-stat">40</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/30.png" alt="Enemy 30 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 10000, &quot;atk&quot;: 750, &quot;def&quot;: 650}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">10000</span></div>
+                        <div>ATT: <span class="atk-stat">750</span></div>
+                        <div>GOLD: <span class="gold-stat">50</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">650</span></div>
+                        <div>EXP: <span class="exp-stat">50</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/31.png" alt="Enemy 31 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 12300, &quot;atk&quot;: 900, &quot;def&quot;: 850}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">12300</span></div>
+                        <div>ATT: <span class="atk-stat">900</span></div>
+                        <div>GOLD: <span class="gold-stat">60</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">850</span></div>
+                        <div>EXP: <span class="exp-stat">75</span></div>
+                    </div>
+                </td>
+            </tr>
+        
+
+            <tr>
+                <td><img src="enemy_sprites/centre_cropped/32.png" alt="Enemy 32 Sprite"></td>
+                <td class=enemy-stats data-enemy-stats="{&quot;hp&quot;: 18750, &quot;atk&quot;: 1100, &quot;def&quot;: 950}">
+                    <div class="enemy-stats-display">
+                        <div>HP: <span class="hp-stat">18750</span></div>
+                        <div>ATT: <span class="atk-stat">1100</span></div>
+                        <div>GOLD: <span class="gold-stat">60</span></div>
+                        <div>LOSS: <span class="hp-loss-stat">???</span></div>
+                        <div>DEF: <span class="def-stat">950</span></div>
+                        <div>EXP: <span class="exp-stat">75</span></div>
+                    </div>
+                </td>
+            </tr>
+            <!-- Repeat for all 32 enemies -->
+        </tbody>
+    </table>
 
     <script src="hp_loss.js"></script>
 </body>
